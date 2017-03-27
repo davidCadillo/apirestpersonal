@@ -36,15 +36,13 @@ class Personas_model extends CI_Model {
     }
 
     public function create() {
-        $resultado = false;
         $datos = json_decode(file_get_contents("php://input"), true);
         $datos['id'] = NULL;
         if ($this->db->insert('personas', $datos)) {
-            if ($this->db->affected_rows() === 1) {
-                $resultado = true;
-            }
+            return $this->db->affected_rows() === 1;
         }
-        return $resultado;
+        return false;
+
     }
 
     public function update($id = NULL) {
@@ -52,10 +50,11 @@ class Personas_model extends CI_Model {
         $datos = json_decode(file_get_contents("php://input"), true);
         unset($datos['id']);
         if (!is_null($id)) {
-            $this->db->update('personas', $datos, ['id' => $id]);
-            if ($this->db->affected_rows() === 1) {
-                $resultado = true;
-            }
+            if ($this->db->update('personas', $datos, ['id' => $id])) {
+                if ($this->db->affected_rows() === 1) {
+                    $resultado = true;
+                }
+            } 
         }
         return $resultado;
     }
@@ -66,4 +65,5 @@ class Personas_model extends CI_Model {
         }
         return $this->db->affected_rows() === 1;
     }
+
 }
