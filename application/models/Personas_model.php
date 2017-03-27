@@ -66,17 +66,4 @@ class Personas_model extends CI_Model {
         }
         return $this->db->affected_rows() === 1;
     }
-
-    private function getPersona() {
-        //Es necesario poner true en la función json_decode para devolver un array asociativo, en vez de un objeto
-        $persona = json_decode(file_get_contents("php://input"), true);
-        /*Al ser 'id' un atributo de clave primaria y autoincremental, no es necesario enviarlo en la solicitud del post,
-        además dicho campo no forma parte del control de quien hace la solicitud, sin embargo, para dotarle de robustez
-        a la API y en caso de enviar id en la solicitud se seteará a null para procesarlo correctamente.
-        */
-        $persona['id'] = NULL;
-        return $persona;
-    }
-
-
 }
